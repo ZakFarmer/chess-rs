@@ -1,10 +1,10 @@
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Colour {
     Black,
     White,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug, PartialEq)]
 pub enum PieceType {
     Pawn,
     Knight,
@@ -14,7 +14,7 @@ pub enum PieceType {
     King,
 }
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub struct Piece {
     colour: Colour,
     piece_type: PieceType,
@@ -34,6 +34,7 @@ impl Piece {
     }
 }
 
+#[derive(Clone, Copy)]
 pub struct Board {
     squares: [Option<Piece>; 64],
 }
@@ -86,6 +87,23 @@ impl Board {
             }
         }
         Ok(Board { squares })
+    }
+
+    pub fn move_piece(&mut self, from: usize, to: usize) {
+        if self.squares[from].is_none() {
+            return;
+        }
+
+        self.squares[to] = self.squares[from];
+        self.squares[from] = None;
+    }
+
+    pub fn new(squares: [Option<Piece>; 64]) -> Board {
+        Board { squares }
+    }
+
+    pub fn squares(&self) -> &[Option<Piece>; 64] {
+        &self.squares
     }
 }
 
